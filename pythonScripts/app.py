@@ -1,86 +1,21 @@
-import sqlite3
 from datetime import datetime, date
 from functools import wraps
 from flask import Flask,render_template,redirect, url_for,request,session,flash
 import os
 import random
-from flask_sqlalchemy import SQLAlchemy
-from flask_admin import Admin, AdminIndexView
-from flask_admin.contrib.sqla import ModelView
-from flask import Flask, request, flash, url_for, redirect, render_template
-from flask_sqlalchemy import SQLAlchemy 
 import json
-from flask_oauth import OAuth
 from flask import make_response, jsonify
+from models import *
+from flask_ngrok import run_with_ngrok
+
+
 
 app = Flask(__name__, static_url_path='/static')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///autocorrect.sqlite3'
 app.config['SECRET_KEY'] = "random string"
+run_with_ngrok(app)
 
-db = SQLAlchemy(app)
-
-
-class test(db.Model):
-	__tablename__ = 'test'
-	column_display_pk = True
-	testid = db.Column(db.Integer, primary_key=True)
-	testname = db.Column(db.String(40))
-	organized_by = db.Column(db.String(40))
-	testdate = db.Column(db.DateTime)
-	venue = db.Column(db.String(40))
-
-class MyTestView(ModelView):
-	column_display_pk = True
-	can_create = True
-	column_list = ('testid','testname','organized_by','testdate','venue')
-	form_columns = ['testid','testname','organized_by','testdate','venue']
-	column_filters = ['testid','testname','organized_by','testdate','venue']
-
-class question(db.Model):
-	__tablename__ = 'question'
-	column_display_pk = True
-	questionid = db.Column(db.Integer, primary_key=True)
-	testid = db.Column(db.Integer)
-	questionSt = db.Column(db.String(100))
-	marks = db.Column(db.Integer)
-	answerVec = db.Column(db.String(500))
-	numOfParts = db.Column(db.Integer)
-
-class MyQuestionView(ModelView):
-	column_display_pk = True
-	can_create = True
-	column_list = ('questionid','testid','questionSt','marks','answerVec','numOfParts')
-	form_columns = ['questionid','testid','questionSt','marks','answerVec','numOfParts']
-	column_filters = ['questionid','testid','questionSt','marks','answerVec','numOfParts']
-
-
-class answer(db.Model):
-	__tablename__ = 'answer'
-	column_display_pk = True
-	answerid = db.Column(db.Integer, primary_key=True)
-	testid = db.Column(db.Integer)
-	questionid = db.Column(db.Integer)
-	marks = db.Column(db.Integer)
-	url = db.Column(db.String(100))
-
-class MyAnswerView(ModelView):
-	column_display_pk = True
-	can_create = True
-	column_list = ('answerid','testid','questionid','marks','url')
-	form_columns = ['answerid','testid','questionid','marks','url']
-	column_filters = ['answerid','testid','questionid','marks','url']
-	
-
-class MyAdminIndexView(AdminIndexView):
-	def is_accessible(self):
-		return True
-
-db.create_all()
-admin = Admin(app,index_view=MyAdminIndexView())
-admin.add_view(MyTestView(test,db.session))
-admin.add_view(MyQuestionView(question,db.session))
-admin.add_view(MyAnswerView(answer,db.session))
 
 @app.route('/')
 def index():
@@ -110,10 +45,20 @@ def create_new_folder(local_dir):
 
 @app.route('/api/test/', methods = ['POST'])
 def api_test():
+	if request.method == 'POST':
+		test = Test(testid=request.form['testid'], testname=request.form['testname'],	
+							organized=request.form['organized'], testdate=request.form['testdate'],venue=request.form['venue'])
+		test.save()
 
 
 @app.route('/api/test/question', methods = ['POST'])
 def api_question():
+	if request.method == 'POST':
+		question = Question(questionid=request.form['questionid'], testid=request.form['test_id'],
+							questionSt=request.form['question_st'], marks=random.randint(1,5), answerVec=request.form['answerVec'],
+							numOfParts=request.form['numofparts'])
+		question.save()
+
 	
 
 
@@ -137,6 +82,4 @@ def api_root():
 if __name__ == '__main__':
 	app.debug = True
 	app.secret_key = os.urandom(12)
-	db.create_all()
-
-app.run(debug = True,threaded=True, host="0.0.0.0",port=5000)
+	app.run()
