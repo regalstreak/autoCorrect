@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import LoginTeacher from './views/Login/LoginTeacher.vue'
+import Teacher from './views/Teacher/Teacher.vue'
 
 Vue.use(Router)
 
@@ -10,6 +12,16 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/login/teacher',
+      name: 'login-teacher',
+      component: LoginTeacher
+    },
+    {
+      path: '/teacher',
+      name: 'teacher',
+      component: Teacher
     },
     {
       path: '/about',
