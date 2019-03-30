@@ -24,8 +24,7 @@ vision_base_url = "https://westcentralus.api.cognitive.microsoft.com/vision/v2.0
 text_recognition_url = vision_base_url + "read/core/asyncBatchAnalyze"
 
 # Set image_url to the URL of an image that you want to analyze.
-#image_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/" + \
-#    "Cursive_Writing_on_Notebook_paper.jpg/800px-Cursive_Writing_on_Notebook_paper.jpg"
+image_url = "https://www.drbeen.com/wp-content/uploads/2016/05/drbeen-sample-prescription-copy-2.jpg"
 
 def recognize(answerVec = 'The notion of a DLTS is the most general of all the different kinds of transition Systems they have considered . For example, each of them may be considered a degenerates case of the more specialized ones.',image_url = 'http://www.cse.iitd.ernet.in/~sak/courses/foav/foav10/L03p09.jpg'):
 	headers = {'Ocp-Apim-Subscription-Key': subscription_key}
@@ -80,4 +79,4 @@ def recognize(answerVec = 'The notion of a DLTS is the most general of all the d
 	
 	print(cosine_similarity(counter1,counter2))
 
-# recognize()
+recognize()
