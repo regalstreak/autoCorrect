@@ -79,7 +79,7 @@ def api_root():
 from flask import send_file
 @app.route('/api/get_image.png')
 def get_image():
-    filename = 'C:/Users/arind/OneDrive/Desktop/text-wrap-circle.png'
+    filename = '/home/sai/Desktop/GooglePay.png'
     return send_file(filename, mimetype='image/png')
 
 

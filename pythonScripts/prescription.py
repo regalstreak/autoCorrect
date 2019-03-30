@@ -16,7 +16,7 @@ vision_base_url = "https://westcentralus.api.cognitive.microsoft.com/vision/v2.0
 text_recognition_url = vision_base_url + "read/core/asyncBatchAnalyze"
 
 
-image_url = "http://127.0.0.1:5000/api/get_image.png"
+image_url = "http://8fd54bda.ngrok.io/api/get_image.png"
 
 headers = {'Ocp-Apim-Subscription-Key': subscription_key}
 # Note: The request parameter changed for APIv2.
