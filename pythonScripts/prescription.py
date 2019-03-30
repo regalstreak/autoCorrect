@@ -16,7 +16,7 @@ vision_base_url = "https://westcentralus.api.cognitive.microsoft.com/vision/v2.0
 text_recognition_url = vision_base_url + "read/core/asyncBatchAnalyze"
 
 
-image_url = "http://8fd54bda.ngrok.io/api/get_image.png"
+image_url = "https://www.aetw.org/images/The_Right_Prescription.jpg" #"https://basicmedicalkey.com/wp-content/uploads/2016/06/image00553-1.jpeg" #"http://www.prescriptionmaker.com/demo.jpg"
 
 headers = {'Ocp-Apim-Subscription-Key': subscription_key}
 # Note: The request parameter changed for APIv2.
@@ -48,12 +48,59 @@ while(poll):
 print()
 #print(analysis['recognitionResults'][0]['lines'])
 file = open('output.txt','w')
+details = ""
 lines_vector = [] 
+flag = 0
 for i in range(0,len(analysis['recognitionResults'][0]['lines'])):
 	print(analysis['recognitionResults'][0]['lines'][i]['text'])
+	if 'Name' in analysis['recognitionResults'][0]['lines'][i]['text']:
+		if ':' in analysis['recognitionResults'][0]['lines'][i]['text']:
+			details += "Name : "+analysis['recognitionResults'][0]['lines'][i]['text'].split(":")[1]+"\n"
+		else:
+			details += "Name : "+analysis['recognitionResults'][0]['lines'][i]['text'].split("Name")[1]+"\n"
+
+	if 'Phone' in analysis['recognitionResults'][0]['lines'][i]['text']:
+		if ':' in analysis['recognitionResults'][0]['lines'][i]['text']:
+			details += "Phone : "+analysis['recognitionResults'][0]['lines'][i]['text'].split(":")[1]+"\n"
+		else:
+			details += "Phone : "+analysis['recognitionResults'][0]['lines'][i]['text'].split("Phone")[1]+"\n"
+
+	if 'Age' in analysis['recognitionResults'][0]['lines'][i]['text']:
+		if ':' in analysis['recognitionResults'][0]['lines'][i]['text']:
+			details += "Age : "+analysis['recognitionResults'][0]['lines'][i]['text'].split(":")[1]+"\n"
+		else:
+			details += "Age : "+analysis['recognitionResults'][0]['lines'][i]['text'].split("Age")[1]+"\n"
+	
+	elif 'Address' in analysis['recognitionResults'][0]['lines'][i]['text']:
+		if ':' in analysis['recognitionResults'][0]['lines'][i]['text']:
+			details += "Address : "+analysis['recognitionResults'][0]['lines'][i]['text'].split(":")[1]+"\n"
+		else:
+			details += "Address : "+analysis['recognitionResults'][0]['lines'][i]['text'].split("Address")[1]+"\n"
+		flag=2
+
+	elif 'Date' in analysis['recognitionResults'][0]['lines'][i]['text']:
+		if ':' in analysis['recognitionResults'][0]['lines'][i]['text']:
+			details += "Date : "+analysis['recognitionResults'][0]['lines'][i]['text'].split(":")[1]+"\n"
+		else:
+			details += "Date : "+analysis['recognitionResults'][0]['lines'][i]['text'].split("Date")[1]+"\n"
+		flag = 2
+
+	elif flag==2:
+		details += "Medicines : \n"
+		details += analysis['recognitionResults'][0]['lines'][i]['text']+"\n"
+		flag = 1
+
+	elif flag==1:
+		if 'label' in analysis['recognitionResults'][0]['lines'][i]['text'] or 'Label' in analysis['recognitionResults'][0]['lines'][i]['text']:
+			break
+		details += analysis['recognitionResults'][0]['lines'][i]['text']+"\n"
+
 	file.write(analysis['recognitionResults'][0]['lines'][i]['text']+"\n")
 	lines_vector.append(analysis['recognitionResults'][0]['lines'][i]['text'])
 
+
+file.write("\n\nInformation Extracted : \n")
+file.write(details)
 file.close()
 
 
