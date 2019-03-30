@@ -42,6 +42,12 @@ def create_new_folder(local_dir):
         os.makedirs(newpath)
     return newpath
 
+def get_keywords(text):
+	from rake_nltk import Rake
+	r = Rake()
+	r.extract_keywords_from_text(text)
+	return r.get_ranked_phrases() # returns a list of phrases
+
 
 @app.route('/api/test/', methods = ['POST'])
 def api_test():
