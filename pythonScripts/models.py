@@ -14,6 +14,7 @@ class Test(db.Document):
 	organized_by = db.StringField()
 	testdate = db.StringField()
 	venue = db.StringField()
+	time = db.StringField()
 
 class Question(db.Document):
 	questionid = db.IntField()

@@ -7,15 +7,14 @@ import json
 from flask import make_response, jsonify
 from models import *
 from flask_ngrok import run_with_ngrok
-
+import jsonify
 
 
 app = Flask(__name__, static_url_path='/static')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///autocorrect.sqlite3'
 app.config['SECRET_KEY'] = "random string"
-run_with_ngrok(app)
-
+# run_with_ngrok(app)
 
 @app.route('/')
 def index():
@@ -42,13 +41,16 @@ def create_new_folder(local_dir):
         os.makedirs(newpath)
     return newpath
 
-@app.route('/api/test/', methods = ['POST'])
+@app.route('/api/test/', methods = ['POST', 'GET'])
 def api_test():
 	if request.method == 'POST':
 		test = Test(testid=request.form['testid'], testname=request.form['testname'],	
 							organized=request.form['organized'], testdate=request.form['testdate'],venue=request.form['venue'])
 		test.save()
-
+	else:
+		data = Test.query.all()
+		print(jsonify(data))
+	return 'haha'	
 
 @app.route('/api/test/question', methods = ['POST'])
 def api_question():
