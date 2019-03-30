@@ -25,7 +25,7 @@ text_recognition_url = vision_base_url + "read/core/asyncBatchAnalyze"
 # Set image_url to the URL of an image that you want to analyze.
 #image_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/" + \
 #    "Cursive_Writing_on_Notebook_paper.jpg/800px-Cursive_Writing_on_Notebook_paper.jpg"
-image_url = "https://westartwithgood.co/wp-content/uploads/2018/03/photograph-handwritten-text-1.jpg"
+image_url = "http://www.cse.iitd.ernet.in/~sak/courses/foav/foav10/L03p09.jpg"
 headers = {'Ocp-Apim-Subscription-Key': subscription_key}
 # Note: The request parameter changed for APIv2.
 # For APIv1, it is 'handwriting': 'true'.
@@ -67,7 +67,7 @@ for i in range(0,len(analysis['recognitionResults'][0]['lines'])):
 	words_vector+=lines_vector[i].split(" ")
 
 print(words_vector)
-examinee_vector = ['We', 'Start', 'With', 'Good', 'Because']
+examinee_vector = words_vector+['We', 'Start', 'With', 'Good', 'Because']
 import math
 
 from collections import Counter
