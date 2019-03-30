@@ -60,8 +60,24 @@ while(poll):
 
 #print(analysis['recognitionResults'][0]['lines'])
 lines_vector = [] 
+words_vector = []
 for i in range(0,len(analysis['recognitionResults'][0]['lines'])):
 	print(analysis['recognitionResults'][0]['lines'][i]['text'])
 	lines_vector.append(analysis['recognitionResults'][0]['lines'][i]['text'])
+	words_vector+=lines_vector[i].split(" ")
 
+print(words_vector)
+examinee_vector = ['We', 'Start', 'With', 'Good', 'Because']
+import math
 
+from collections import Counter
+counterA = Counter(words_vector)
+counterB = Counter(examinee_vector)
+def counter_cosine_similarity(c1, c2):
+    terms = set(c1).union(c2)
+    dotprod = sum(c1.get(k, 0) * c2.get(k, 0) for k in terms)
+    magA = math.sqrt(sum(c1.get(k, 0)**2 for k in terms))
+    magB = math.sqrt(sum(c2.get(k, 0)**2 for k in terms))
+    return dotprod / (magA * magB)
+
+print(counter_cosine_similarity(counterA, counterB))
