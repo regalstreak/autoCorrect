@@ -4,6 +4,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './stylus/main.styl'
+// import gradient from 'random-gradient'
+
 
 Vue.config.productionTip = false
 
@@ -12,3 +14,11 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+
+// Vue.directive('random-gradient', {
+//     inserted: function (el) {
+//         // Using the element's "title" attribute, e.g.
+//         el.style.backgroundImage = gradient(el.title);
+//     }
+// });
