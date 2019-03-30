@@ -58,8 +58,6 @@ def api_question():
 							numOfParts=request.form['numofparts'])
 		question.save()
 
-	
-
 
 
 @app.route('/api/upload/', methods = ['POST'])
@@ -76,6 +74,11 @@ def api_root():
     	return send_from_directory(app.config['UPLOAD_FOLDER'],img_name, as_attachment=True)
 
 
+from flask import send_file
+@app.route('/api/get_image.png')
+def get_image():
+    filename = 'C:/Users/arind/OneDrive/Desktop/text-wrap-circle.png'
+    return send_file(filename, mimetype='image/png')
 
 
 if __name__ == '__main__':
