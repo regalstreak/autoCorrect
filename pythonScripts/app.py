@@ -30,6 +30,13 @@ class test(db.Model):
 	testdate = db.Column(db.DateTime)
 	venue = db.Column(db.String(40))
 
+class MyTestView(ModelView):
+	column_display_pk = True
+	can_create = True
+	column_list = ('testid','testname','organized_by','testdate','venue')
+	form_columns = ['testid','testname','organized_by','testdate','venue']
+	column_filters = ['testid','testname','organized_by','testdate','venue']
+
 class question(db.Model):
 	__tablename__ = 'question'
 	column_display_pk = True
@@ -40,6 +47,14 @@ class question(db.Model):
 	answerVec = db.Column(db.String(500))
 	numOfParts = db.Column(db.Integer)
 
+class MyQuestionView(ModelView):
+	column_display_pk = True
+	can_create = True
+	column_list = ('questionid','testid','questionSt','marks','answerVec','numOfParts')
+	form_columns = ['questionid','testid','questionSt','marks','answerVec','numOfParts']
+	column_filters = ['questionid','testid','questionSt','marks','answerVec','numOfParts']
+
+
 class answer(db.Model):
 	__tablename__ = 'answer'
 	column_display_pk = True
@@ -49,6 +64,23 @@ class answer(db.Model):
 	marks = db.Column(db.Integer)
 	url = db.Column(db.String(100))
 
+class MyAnswerView(ModelView):
+	column_display_pk = True
+	can_create = True
+	column_list = ('answerid','testid','questionid','marks','url')
+	form_columns = ['answerid','testid','questionid','marks','url']
+	column_filters = ['answerid','testid','questionid','marks','url']
+	
+
+class MyAdminIndexView(AdminIndexView):
+	def is_accessible(self):
+		return True
+
+db.create_all()
+admin = Admin(app,index_view=MyAdminIndexView())
+admin.add_view(MyTestView(test,db.session))
+admin.add_view(MyQuestionView(question,db.session))
+admin.add_view(MyAnswerView(answer,db.session))
 
 @app.route('/')
 def index():
@@ -74,6 +106,15 @@ def create_new_folder(local_dir):
     if not os.path.exists(newpath):
         os.makedirs(newpath)
     return newpath
+
+
+@app.route('/api/test/', methods = ['POST'])
+def api_test():
+
+
+@app.route('/api/test/question', methods = ['POST'])
+def api_question():
+	
 
 
 
