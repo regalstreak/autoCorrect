@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
 from PIL import Image
 from io import BytesIO
+from utils import *
 
 # Replace <Subscription Key> with your valid subscription key.
 subscription_key = "ed4519c8ea7a4ae5959e3e81549616f4"
@@ -26,8 +27,7 @@ text_recognition_url = vision_base_url + "read/core/asyncBatchAnalyze"
 #image_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/" + \
 #    "Cursive_Writing_on_Notebook_paper.jpg/800px-Cursive_Writing_on_Notebook_paper.jpg"
 
-def recognize(answerVec,image_url):
-	#image_url = "http://www.cse.iitd.ernet.in/~sak/courses/foav/foav10/L03p09.jpg"
+def recognize(answerVec = 'The notion of a DLTS is the most general of all the different kinds of transition Systems they have considered . For example, each of them may be considered a degenerates case of the more specialized ones.',image_url = 'http://www.cse.iitd.ernet.in/~sak/courses/foav/foav10/L03p09.jpg'):
 	headers = {'Ocp-Apim-Subscription-Key': subscription_key}
 	# Note: The request parameter changed for APIv2.
 	# For APIv1, it is 'handwriting': 'true'.
@@ -61,21 +61,23 @@ def recognize(answerVec,image_url):
 
 
 	#print(analysis['recognitionResults'][0]['lines'])
-	lines_vector = [] 
-	words_vector = []
+	extracted_text = ''
+	lines_vector = []
+
 	for i in range(0,len(analysis['recognitionResults'][0]['lines'])):
 		print(analysis['recognitionResults'][0]['lines'][i]['text'])
 		lines_vector.append(analysis['recognitionResults'][0]['lines'][i]['text'])
-		words_vector+=lines_vector[i].split(" ")
-
-	print(words_vector)
-	examinee_vector = answerVec.split()
+		extracted_text+=lines_vector[i]
 	
-	counterA = Counter(words_vector)
-	counterB = Counter(examinee_vector)
-	#def counter_cosine_similarity(c1, c2):
-	terms = set(counterA).union(counterB)
-	dotprod = sum(counterA.get(k, 0) * counterB.get(k, 0) for k in terms)
-	magA = math.sqrt(sum(counterA.get(k, 0)**2 for k in terms))
-	magB = math.sqrt(sum(counterB.get(k, 0)**2 for k in terms))
-	return dotprod / (magA * magB)
+	print(extracted_text)
+	examinee_text = answerVec
+	
+	prepro_extract = preprocess_data(extracted_text)
+	prepro_examinee = preprocess_data(examinee_text)
+
+	counter1 = Counter(prepro_extract)
+	counter2 = Counter(prepro_examinee)
+	
+	print(cosine_similarity(counter1,counter2))
+
+# recognize()
