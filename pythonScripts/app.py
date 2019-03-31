@@ -7,6 +7,7 @@ import json
 from flask import make_response, jsonify
 from models import *
 from flask_ngrok import run_with_ngrok
+from utils import get_similarity_api
 from flask_marshmallow import Marshmallow
 from TextRecognizer import *
 
@@ -66,7 +67,7 @@ def create_new_folder(local_dir):
 def api_test():
 	if request.method == 'POST':
 		test = Test(testid=request.form['testid'], testname=request.form['testname'],	
-							organized=request.form['organized'], testdate=request.form['testdate'],venue=request.form['venue'])
+							organized=request.form['organized'], testdate=request.form['testdate'],venue=request.form['venue'], questions=request.form['questions'])
 		test.save()
 
 	data = Test.query.all()
@@ -85,7 +86,7 @@ def api_question():
 @app.route('/api/upload/', methods = ['POST', 'GET'])
 def api_root():
     app.logger.info(PROJECT_HOME)
-    # if request.method == 'POST' and request.files['image']:
+    if request.method == 'POST' :
     # 	app.logger.info(app.config['UPLOAD_FOLDER'])
     # 	img = request.files['image']
     # 	img_name = secure_filename(img.filename)
@@ -94,12 +95,14 @@ def api_root():
     # 	app.logger.info("saving {}".format(saved_path))
     # 	img.save(saved_path)
     # 	send_from_directory(app.config['UPLOAD_FOLDER'],img_name, as_attachment=True)
-	testid = request.form['testid']
-	questionid = request.form['questionid']
-	url = request.form['url']
-	question = Question.query.filter_by(questionid=questionid).first()
-    recognize(question.answerVec, url )
-	return render_template('static.html')
+        testid = int(request.form['testid'])
+        questionid = int(request.form['questionid'])
+        url = request.form['url']
+        question = Question.query.filter_by(questionid=questionid).first()
+        output1,output2,output3 = recognize(question.answerVec, url)
+        return jsonify({"result":{"score":output1*question.marks, "your_answer":output2,"actual_answer":output3}})
+
+    return render_template('static.html')
 
 
 from flask import send_file
