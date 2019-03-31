@@ -7,19 +7,37 @@ import json
 from flask import make_response, jsonify
 from models import *
 from flask_ngrok import run_with_ngrok
-import jsonify
-
+from flask_marshmallow import Marshmallow
 
 app = Flask(__name__, static_url_path='/static')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///autocorrect.sqlite3'
 app.config['SECRET_KEY'] = "random string"
+ma = Marshmallow(app)
+
 # run_with_ngrok(app)
+
+
+
+class TestSchema(ma.Schema):
+    class Meta:
+        # Fields to expose
+        fields = ("testid", "testname", "organized_by","testdate","venue")
+
+    # Smart hyperlinking
+    _links = ma.Hyperlinks(
+        {"self": ma.URLFor("test_detail", id="<id>"), "collection": ma.URLFor("tests")}
+    )
+
+
+test_schema = TestSchema()
+tests_schema = TestSchema(many=True)
+
 
 @app.route('/')
 def index():
-	result = {'hello': 'world'}
-	return make_response(jsonify(result), 201)
+	# result = {'hello': 'world'}
+	return jsonify({"result": {'hello': 'world'}})
 
 
 from flask import Flask, url_for, send_from_directory, request
@@ -35,6 +53,7 @@ UPLOAD_FOLDER = '{}/uploads/'.format(PROJECT_HOME)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
+
 def create_new_folder(local_dir):
     newpath = local_dir
     if not os.path.exists(newpath):
@@ -47,10 +66,9 @@ def api_test():
 		test = Test(testid=request.form['testid'], testname=request.form['testname'],	
 							organized=request.form['organized'], testdate=request.form['testdate'],venue=request.form['venue'])
 		test.save()
-	else:
-		data = Test.query.all()
-		print(jsonify(data))
-	return 'haha'	
+
+	data = Test.query.all()
+	return tests_schema.jsonify(data)
 
 @app.route('/api/test/question', methods = ['POST'])
 def api_question():
