@@ -22,7 +22,6 @@ class Question(db.Document):
 	questionSt = db.StringField()
 	marks = db.IntField()
 	answerVec = db.StringField()
-	numOfParts = db.IntField()
 
 class Answer(db.Document):
 	answerid =  db.IntField()

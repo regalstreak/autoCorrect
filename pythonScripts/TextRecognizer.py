@@ -62,4 +62,4 @@ def recognize(answerVec = text, image_url = 'http://www.cse.iitd.ernet.in/~sak/c
 	
 	print(get_similarity_api(prepro_examinee,prepro_extract))
 
-recognize()
+

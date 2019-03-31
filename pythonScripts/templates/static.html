@@ -1,0 +1,9 @@
+<div class="col-md-9">
+  <h2> Research Paper upload </h2>
+  <form action = "{{ url_for('api_root') }}" method = "POST" enctype = "multipart/form-data">
+         <input type = "file" name = "image"><br>
+         <input type = "text" name = "testid"><br>
+         <input type = "text" name = "questionid"><br>
+         <input type = "submit"/><br>
+      </form>
+      <br>

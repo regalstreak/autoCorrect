@@ -8,6 +8,8 @@ from flask import make_response, jsonify
 from models import *
 from flask_ngrok import run_with_ngrok
 from flask_marshmallow import Marshmallow
+from TextRecognizer import *
+
 
 app = Flask(__name__, static_url_path='/static')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -80,18 +82,24 @@ def api_question():
 
 
 
-@app.route('/api/upload/', methods = ['POST'])
+@app.route('/api/upload/', methods = ['POST', 'GET'])
 def api_root():
     app.logger.info(PROJECT_HOME)
-    if request.method == 'POST' and request.files['image']:
-    	app.logger.info(app.config['UPLOAD_FOLDER'])
-    	img = request.files['image']
-    	img_name = secure_filename(img.filename)
-    	create_new_folder(app.config['UPLOAD_FOLDER'])
-    	saved_path = os.path.join(app.config['UPLOAD_FOLDER'], img_name)
-    	app.logger.info("saving {}".format(saved_path))
-    	img.save(saved_path)
-    	return send_from_directory(app.config['UPLOAD_FOLDER'],img_name, as_attachment=True)
+    # if request.method == 'POST' and request.files['image']:
+    # 	app.logger.info(app.config['UPLOAD_FOLDER'])
+    # 	img = request.files['image']
+    # 	img_name = secure_filename(img.filename)
+    # 	create_new_folder(app.config['UPLOAD_FOLDER'])
+    # 	saved_path = os.path.join(app.config['UPLOAD_FOLDER'], img_name)
+    # 	app.logger.info("saving {}".format(saved_path))
+    # 	img.save(saved_path)
+    # 	send_from_directory(app.config['UPLOAD_FOLDER'],img_name, as_attachment=True)
+	testid = request.form['testid']
+	questionid = request.form['questionid']
+	url = request.form['url']
+	question = Question.query.filter_by(questionid=questionid).first()
+    recognize(question.answerVec, url )
+	return render_template('static.html')
 
 
 from flask import send_file
