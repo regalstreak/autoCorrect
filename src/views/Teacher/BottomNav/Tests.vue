@@ -18,16 +18,21 @@
             <!-- <v-img class="cardImage" :src="require(`@/assets/card_bg.png`)" ></v-img> -->
 
             <v-card-title primary-title>
-              <h3 class="ourCardHeading display-1" style="font-family: Dosis, sans-serif">Test {{i}}</h3>
+              <h3
+                class="ourCardHeading display-1 apnamaintext"
+                style="font-family: Dosis, sans-serif"
+              >Test {{i}}</h3>
             </v-card-title>
 
             <v-layout column>
               <v-flex
                 xs6
+                class="apnaText"
                 style=" margin-left: 10px; font-size: 20px; margin-bottom: 10px"
               >Date: 23/2/42</v-flex>
               <v-flex
                 xs6
+                class="apnaText"
                 style="margin-left: 10px; font-size: 20px; margin-bottom: 10px;  "
               >Time: 10:00pm</v-flex>
             </v-layout>
@@ -132,11 +137,21 @@
               <v-subheader>Questions</v-subheader>
             </v-list>
             <v-container>
-              <v-card v-for="q in questions" :key="q"></v-card>
+              <v-card class="pa-3" v-for="(q, index) in questionsArray" :key="index">
+                <v-text-field v-model="q.no" label="Question No." hint="Could be an int" clearable></v-text-field>
+                <v-text-field v-model="q.qn" label="Question" hint="Write your question" clearable></v-text-field>
+                <v-textarea
+                  v-model="q.ans"
+                  name="input-7-1"
+                  label="Answer"
+                  value
+                  hint="Write an approximate answer"
+                ></v-textarea>
+              </v-card>
             </v-container>
           </v-card>
           <v-btn
-            @click="questions = questions + 1"
+            @click="addQuestion()"
             color="secondary"
             dark
             fixed
@@ -169,6 +184,7 @@ export default {
       menu2: false,
       modal2: false,
       questions: 1,
+      questionsArray: [],
       date: new Date().toISOString().substr(0, 10),
       menu1: false,
       card_text:
@@ -188,6 +204,13 @@ export default {
     }
   },
   methods: {
+    addQuestion(){
+      this.questionsArray.push ({
+        no: this.questionsArray.length + 1,
+        qn: "",
+        ans: ""
+      })
+    },
     postTestData() {
       var bodyFormData = new FormData();
       bodyFormData.set("testid", Math.floor(Math.random() * 90000) + 10000);
@@ -196,10 +219,12 @@ export default {
       bodyFormData.set("testdate", this.computedDateFormattedMomentjs);
       bodyFormData.set("venue", this.test.venue);
       bodyFormData.set("time", this.time);
+      bodyFormData.set("questions", this.questionsArray);
+
 
       axios({
         method: "post",
-        url: "http://b6019fce.ngrok.io/api/test",
+        url: "http://880a3df3.ngrok.io/api/test",
         data: bodyFormData,
         config: { headers: { "Content-Type": "multipart/form-data" } }
       })
@@ -230,6 +255,12 @@ export default {
   background-position: right top;
 }
 
+.apnaText {
+  font-weight: 500;
+}
+.apnamaintext {
+  font-weight: 600;
+}
 .ourCardHeading {
   /* transform: translate(0px, -70px); */
 }

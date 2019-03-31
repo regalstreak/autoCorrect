@@ -1,12 +1,16 @@
 <template>
-  <v-container id="ourContainer">
+  <div id="ourContainer">
     <v-layout column class="layoutLoginBg" justify-center align-content-center>
-      <v-flex xs4 class="flexImage">
-        <v-img height="100" src="https://picsum.photos/510/300?random" aspect-ratio="1" contain></v-img>
+      <v-flex xs4 style="padding-top: 100px" class="flexImage">
+        <v-img  height="70" :src="require('../../assets/ourLogo.png')" contain></v-img>
       </v-flex>
+      <v-flex xs1 class="flexLogin">
+        <span class="display-1">Teacher Login</span>
+      </v-flex> 
       <v-flex xs1 class="flexLogin">
         <v-text-field style="margin: 0rem 3.5rem" v-model="email" label="email"></v-text-field>
       </v-flex>
+
       <v-flex xs1 class="flexLogin">
         <v-text-field
           style="margin: 0rem 3.5rem"
@@ -18,16 +22,14 @@
         ></v-text-field>
       </v-flex>
       <v-flex xs1>
-        <v-layout row justify-center>
+        <v-layout column justify-center>
           <v-flex xs6 class="flexButton">
-            <v-btn large round to="/teacher" class="loginButton white--text ma-2" color="#01509E">
-              <div style="padding-right: 40px;padding-left: 40px;">
-                <font style="text-transform: lowercase;">login</font>
-              </div>
+            <v-btn block round to="/teacher" class="white--text ma-2" color="secondary">
+              <font style="text-transform: lowercase;">login</font>
             </v-btn>
           </v-flex>
           <v-flex xs6 class="flexButton flexButtonSignup">
-            <v-btn large round to="/dashboard" class="ma-2">
+            <v-btn block round to="/dashboard" class="ma-2">
               <div style="padding-right: 40px;padding-left: 40px;">
                 <font style="text-transform: lowercase;">Signup</font>
               </div>
@@ -36,7 +38,8 @@
         </v-layout>
       </v-flex>
     </v-layout>
-  </v-container>
+    <v-img height="300" style="margin-left: 100px" :src="require('../../assets/login_bg_2.png')"></v-img>
+  </div>
 </template>
 
 <script>
@@ -62,7 +65,9 @@ export default {
   /* clip-path: polygon(0 0, 100% 100%, 100% 20%, 0 0); */
   background-image: url("../../assets/teacher.png");
   background-size: contain;
-  
+  height: 100vh;
+  transform: translateX(-1px);
+  overflow: hidden;
 }
 .flexLogin {
   /* background-color: blue; */
