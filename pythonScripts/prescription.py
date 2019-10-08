@@ -6,9 +6,10 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
 from PIL import Image
 from io import BytesIO
+import os
 
 # Replace <Subscription Key> with your valid subscription key.
-subscription_key = "ed4519c8ea7a4ae5959e3e81549616f4"
+subscription_key = os.environ.get('SUBSCRIPTION_KEY')
 assert subscription_key
 
 vision_base_url = "https://westcentralus.api.cognitive.microsoft.com/vision/v2.0/"
@@ -16,11 +17,7 @@ vision_base_url = "https://westcentralus.api.cognitive.microsoft.com/vision/v2.0
 text_recognition_url = vision_base_url + "read/core/asyncBatchAnalyze"
 
 
-<<<<<<< HEAD
 image_url = "https://i.ibb.co/qR9F7bk/new-doc-2019-03-31-08-16-13-1.jpg"
-=======
-image_url = "https://www.aetw.org/images/The_Right_Prescription.jpg" #"https://basicmedicalkey.com/wp-content/uploads/2016/06/image00553-1.jpeg" #"http://www.prescriptionmaker.com/demo.jpg"
->>>>>>> 9a8a4d6269ede4d7ee7eda10422d80dddf36c223
 
 headers = {'Ocp-Apim-Subscription-Key': subscription_key}
 # Note: The request parameter changed for APIv2.

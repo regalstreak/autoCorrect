@@ -5,7 +5,6 @@ import router from './router'
 import store from './store'
 import './stylus/main.styl'
 import VueLazyload from 'vue-lazyload'
-// import gradient from 'random-gradient'
 
 
 Vue.use(VueLazyload);
@@ -17,11 +16,3 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
-
-
-// Vue.directive('random-gradient', {
-//     inserted: function (el) {
-//         // Using the element's "title" attribute, e.g.
-//         el.style.backgroundImage = gradient(el.title);
-//     }
-// });

@@ -7,16 +7,6 @@ def add_block(data):
     bdb = BigchainDB(bdb_root_url)
     alice = generate_keypair()
 
-    # data = {'data': 
-    #     {'123abc': 
-    #         {
-    #             'question': '1',
-    #             'text': 'bkfabdcfreferfejfbewjuhcbwdichbewidyewbdiew ieydvewudhew eduew utvewboiugy ewduie',
-    #             'marks': 0.35,
-    #         },
-    #     },
-    # }
-
     prepared_creation_tx = bdb.transactions.prepare(
         operation='CREATE',
         signers=alice.public_key,
@@ -29,5 +19,4 @@ def add_block(data):
     
     block_height = bdb.blocks.get(txid=sent_creation_tx['id'])
     block = bdb.blocks.retrieve(str(block_height))
-    # print()
     print(block['transactions'][0].get('asset').get('data'))

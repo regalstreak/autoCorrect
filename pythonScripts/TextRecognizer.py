@@ -5,8 +5,9 @@ from matplotlib.patches import Polygon
 from PIL import Image
 from io import BytesIO
 from utils import *
+import os
 
-subscription_key = "ed4519c8ea7a4ae5959e3e81549616f4"
+subscription_key = os.environ.get('SUBSCRIPTION_KEY')
 assert subscription_key
 
 vision_base_url = "https://westcentralus.api.cognitive.microsoft.com/vision/v2.0/"

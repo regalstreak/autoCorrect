@@ -15,17 +15,6 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    // {
-    //   path: '/',
-    //   name: 'home',
-    //   component: Home
-    // },
-    // {
-    //   path: '/destination',
-    //   mode: history,
-    //   name: 'home',
-    //   component: { template: OurHomePage }
-    // },
     {
       path: '/login/teacher',
       name: 'login-teacher',
