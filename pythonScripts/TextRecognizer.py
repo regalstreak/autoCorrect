@@ -41,8 +41,6 @@ def recognize(answerVec = text, image_url = 'http://www.cse.iitd.ernet.in/~sak/c
 		if ("status" in analysis and analysis['status'] == 'Failed'):
 		    poll= False
 
-
-	#print(analysis['recognitionResults'][0]['lines'])
 	extracted_text = ''
 	lines_vector = []
 
@@ -57,9 +55,6 @@ def recognize(answerVec = text, image_url = 'http://www.cse.iitd.ernet.in/~sak/c
 	
 	prepro_extract = preprocess_data(extracted_text)
 	prepro_examinee = preprocess_data(examinee_text)
-	
-	#counter1 = Counter(prepro_extract)
-	#counter2 = Counter(prepro_examinee)
 	
 	print(get_similarity_api(prepro_examinee,prepro_extract))
 

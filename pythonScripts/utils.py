@@ -21,9 +21,6 @@ def preprocess_data(raw_text):
     formatted_raw_text = re.sub('[^a-zA-Z]', ' ', raw_text )  
     formatted_raw_text = re.sub(r'\s+', ' ', formatted_raw_text)
 
-    # r = Rake()
-    # r.extract_keywords_from_text(formatted_raw_text)
-    # return r.get_ranked_phrases() # returns a list of phrases
     return formatted_raw_text
 
 
@@ -37,8 +34,6 @@ def test():
 
 def get_similarity_api(text1,text2):
     token = '943bcf6c05064b029e7bc2f6e397d646'
-    #text1 = 'The notion of a DLTS is the most general ofall the different kinds ofof transition Systemsthe have Considered . For example, each of themmay be considered a degenerates case of themoreSpecialized . ones .1. 1 . & LTS is a Special DLTS in which each State is decorated only by its identity.Le . for any State S , we may think of} as an atomic proposition Signifying theState itself or its identity. ze . Is is the decorationsof State s . OfIf DTS is a special DLTS in which the1.2 .Set of actions # A is a Singleton Get whoseelement may be omitted from the area ofthe transitions*1.3 . A TS is a DTS in the flame fence as 1 .1.i.e . the State itself is the atomic propositionWhich decorates the state'
-    #text2 = 'The notion of a DLTS is the most general of all the different kinds of transition Systems they have considered . For example, each of them may be considered a degenerates case of the more specialized ones'
 
     url = 'https://api.dandelion.eu/datatxt/sim/v1/?text1='+text1+'&text2='+text2.replace(' ','%20').replace('.','')+'&token='+token
 
