@@ -10,6 +10,7 @@ from flask_ngrok import run_with_ngrok
 from utils import get_similarity_api
 from flask_marshmallow import Marshmallow
 from TextRecognizer import *
+from flask import send_file
 
 
 app = Flask(__name__, static_url_path='/static')
@@ -104,8 +105,6 @@ def api_root():
 
     return render_template('static.html')
 
-
-from flask import send_file
 @app.route('/api/get_image.png')
 def get_image():
     filename = '/home/sai/Desktop/GooglePay.png'
