@@ -1,5 +1,5 @@
 # autocorrect
-
+ A project which automatically recognizes answers and compares them to the set of answer keys using state-of-the-art NLP techniques.
 ## Project setup
 ```
 yarn install
